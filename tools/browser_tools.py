@@ -33,11 +33,11 @@ class BrowserTools():
           allow_delegation=False)
       task = Task(
           agent=agent,
-          description=f'Analyze and create a summary of the following content.
+          description=f'''Analyze and create a summary of the following content.
           Be sure to retain all facts and key topics
           and to remove any unnecessary information.
           Return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
-      )
+      ''')
       summary = task.execute()
       summaries.append(summary)
       content = "\n\n".join(summaries)
