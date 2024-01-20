@@ -1,15 +1,16 @@
 import os
+import openai
 from textwrap import dedent
 from crewai import Agent
 from tools.browser_tools import BrowserTools
 from tools.search_tools import SearchTools
 from langchain.agents import load_tools
 
-from langchain.llms import Ollama
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class MarketingAnalysisAgents:
 	def __init__(self):
-		self.llm = Ollama(model=os.environ['MODEL'])
+		self.llm = None  # We will use OpenAI's API directly
 
 	def product_competitor_agent(self):
 		return Agent(
@@ -26,6 +27,14 @@ class MarketingAnalysisAgents:
 			llm=self.llm,
 			verbose=True
 		)
+
+	def _ask_openai(self, prompt, max_tokens=150):
+		response = openai.Completion.create(
+			engine="text-davinci-003",
+			prompt=prompt,
+			max_tokens=max_tokens
+		)
+		return response.choices[0].text.strip()
 
 	def strategy_planner_agent(self):
 		return Agent(
